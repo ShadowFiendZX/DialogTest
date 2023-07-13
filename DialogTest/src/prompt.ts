@@ -1,18 +1,16 @@
-import { autoinject } from 'aurelia-framework';
-import { DialogController } from 'aurelia-dialog';
+import { inject } from 'aurelia';
+import { IDialogController } from '@aurelia/dialog';
 
-@autoinject
+@inject(IDialogController)
 export class Prompt
 {
-
 	message : any[];
 
-	constructor(private dialogController : DialogController)
+	constructor(private dialogController : IDialogController)
 	{
 		this.message = null;
 
 		dialogController.settings.lock = false;
-		dialogController.settings.centerHorizontalOnly = true;
 	}
 	activate(message) : void
 	{

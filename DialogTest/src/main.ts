@@ -1,12 +1,8 @@
-import { Aurelia, PLATFORM } from 'aurelia-framework';
+import Aurelia from 'aurelia';
+import { DialogDefaultConfiguration } from '@aurelia/dialog';
+import { MyApp } from './my-app';
 
-export async function configure(au : Aurelia)
-{
-	au.use
-		.standardConfiguration()
-		.developmentLogging()
-		.plugin(PLATFORM.moduleName('aurelia-dialog'));
-
-	await au.start();
-	await au.setRoot(PLATFORM.moduleName('my-app')); // Note the PLATFORM.moduleName
-}
+Aurelia
+	.register(DialogDefaultConfiguration)
+	.app(MyApp)
+	.start();
