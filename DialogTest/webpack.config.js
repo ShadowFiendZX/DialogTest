@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const { AureliaPlugin } = require('aurelia-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const Dotenv = require('dotenv-webpack');
 
 const cssLoader = 'css-loader';
-
 
 const postcssLoader = {
   loader: 'postcss-loader',
@@ -21,10 +21,11 @@ module.exports = function(env, { analyze }) {
   return {
     target: 'web',
     mode: production ? 'production' : 'development',
-    devtool: production ? undefined : 'eval-cheap-source-map',
+    devtool: production ? 'source-map' : 'inline-source-map',
     entry: {
-      entry: './src/main.ts'
-    },
+            // the 'aurelia-bootstrapper' entry point is responsible for resolving your app code
+            app: [ 'aurelia-bootstrapper' ]
+        },
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: production ? '[name].[contenthash].bundle.js' : '[name].bundle.js'
@@ -58,7 +59,10 @@ module.exports = function(env, { analyze }) {
       ]
     },
     plugins: [
-      new HtmlWebpackPlugin({ template: 'index.html', favicon: 'favicon.ico' }),
+      // the AureliaPlugin translates Aurelia's conventions to something Webpack understands
+      // and must be included in order for Webpack to work
+      new AureliaPlugin(),
+      new HtmlWebpackPlugin({ template: 'index.ejs', favicon: 'favicon.ico' }),
       new Dotenv({
         path: `./.env${production ? '' :  '.' + (process.env.NODE_ENV || 'development')}`,
       }),

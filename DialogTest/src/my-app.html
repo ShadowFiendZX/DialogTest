@@ -1,1 +1,12 @@
-<div class="message">${message}</div>
+<template>
+	<div class="message">${message}</div>
+
+	<form submit.trigger="buttonPress()">
+		<span>
+			<label for="inputBox">Input</label>
+			<input id="inputBox" type="text" value.bind="inputBox"/>
+		</span>
+		<br/>
+		<button id="button" type="submit">Submit</button>
+	</form>
+</template>
